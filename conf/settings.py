@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     # My apps
-    'users',
+    # 'users',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -144,7 +145,7 @@ LOGOUT_REDIRECT_URL = '/'
 STATIC_URL = '/static/'
 
 # CustomAccount model
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomAccount'
 
 # django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
