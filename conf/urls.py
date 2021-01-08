@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Registration via browser
-    path('accounts/registrer/', 
+    path('accounts/register/', 
         RegistrationView.as_view(
             form_class=CustomUserForm,
             success_url='/',
