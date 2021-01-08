@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from django_registration.backends.one_step.views import RegistrationView
 
+from core.views import IndexTemplateView
 from users.forms import CustomUserForm
 
 urlpatterns = [
@@ -37,7 +38,10 @@ urlpatterns = [
 
     # Login via browser
     path('accounts/', 
-        include('django.contrib.auth.urls')), 
+        include('django.contrib.auth.urls')),
+
+    path('api/',
+        include('users.api.urls')), 
 
     # Login via browsable API from rest_framework
     path('api-auth/', 
@@ -50,4 +54,6 @@ urlpatterns = [
     # Registration via rest
     path('api/rest-auth/registration/', 
         include('rest_auth.registration.urls')),
+
+    re_path(r'^.*$', IndexTemplateView.as_view(), name='entry-point'),
 ]
