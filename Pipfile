@@ -13,6 +13,7 @@ django-rest-auth = "*"
 django-allauth = "*"
 django-registration = "*"
 django-crispy-forms = "*"
+python-decouple = "*"
 
 [requires]
 python_version = "3.8"
