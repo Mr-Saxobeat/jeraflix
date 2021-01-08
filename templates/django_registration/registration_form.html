@@ -1,0 +1,13 @@
+{% extends 'auth_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h3>Cria nova conta</h3>
+<div class="registration-form-container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-sm btn-outline-primary">Criar conta Jeraflix</button>
+    </form>
+</div>
+{% endblock %}
