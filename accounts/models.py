@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class CustomAccount(AbstractUser):
-    pass
+    email = models.EmailField('Endereço de email', unique=True)
 
 class Profile(models.Model):
     account = models.ForeignKey(CustomAccount, on_delete=models.CASCADE, related_name='profiles')
