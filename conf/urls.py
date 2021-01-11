@@ -18,7 +18,7 @@ from django.urls import include, path, re_path
 
 from django_registration.backends.one_step.views import RegistrationView
 
-from core.views import IndexTemplateView
+from core.views import IndexTemplateView, CustomLoginView
 from accounts.forms import AccountForm
 
 urlpatterns = [
@@ -31,6 +31,10 @@ urlpatterns = [
             success_url='/',
             ),
             name='django_registration_register'),
+
+    path('accounts/login/',
+        CustomLoginView
+        ),
 
     # Urls used by django_registration
     path('accounts/', 
