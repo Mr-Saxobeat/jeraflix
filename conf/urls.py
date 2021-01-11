@@ -18,7 +18,8 @@ from django.urls import include, path, re_path
 
 from django_registration.backends.one_step.views import RegistrationView
 
-from core.views import IndexTemplateView, CustomLoginView
+from core.views import IndexTemplateView
+from accounts.views import CustomLoginView
 from accounts.forms import AccountForm
 
 urlpatterns = [
@@ -58,6 +59,9 @@ urlpatterns = [
     # Registration via rest
     path('api/rest-auth/registration/', 
         include('rest_auth.registration.urls')),
+
+    path('api/movies/',
+        include('movies.urls')),
 
     re_path(r'^.*$', IndexTemplateView.as_view(), name='entry-point'),
 ]
