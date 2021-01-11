@@ -16,11 +16,8 @@ def CustomLoginView(request):
         form = LoginAccountForm()
         return render(request, 'registration/login.html', { 'form': form})
     elif request.method == 'POST':
-        print(request.POST['email'])
-        print(request.POST['password'])
         user = authenticate(request, email=request.POST['email'], password=request.POST['password'])
         if user is None:
-            print('deu rum')
             return render(request, 'registration/login.html', { 'form': LoginAccountForm(), 'error': 'Email ou senha incorretos.'})
         else:
             login(request, user)
