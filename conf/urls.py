@@ -45,7 +45,7 @@ urlpatterns = [
     path('accounts/', 
         include('django.contrib.auth.urls')),
 
-    path('api/',
+    path('api/accounts/',
         include('accounts.api.urls')), 
 
     # Login via browsable API from rest_framework
