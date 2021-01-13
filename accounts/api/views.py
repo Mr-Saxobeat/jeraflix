@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
@@ -11,6 +12,12 @@ class CurrentAccountAPIView(APIView):
     def get(self, request):
         serializer = CustomAccountDisplaySerializer(request.user)
         return Response(serializer.data)
+
+
+def SwitchProfile(request, pk):
+    new_profile = Profile.objects.get(pk=pk)
+    request.session['current-profile'] = new_profile.id
+    return redirect('/')
 
 
 class ListCreateProfileView(generics.ListCreateAPIView):
@@ -33,5 +40,10 @@ class RestrieveProfileView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        pk = self.request.session['current-profile']
+        print(pk)
+        return Profile.objects.get(pk=pk)
 
 
