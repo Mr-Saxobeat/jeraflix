@@ -13,6 +13,10 @@ urlpatterns = [
     path('watchlist/',
         views.UserWatchListAPIView.as_view(),
         name='watchlist'),
+
+    path('watchedlist/',
+        views.UserWatchedListAPIView.as_view(),
+        name='watchedlist'),
 ]
 
 
