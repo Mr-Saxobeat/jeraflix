@@ -61,7 +61,7 @@ urlpatterns = [
         include('rest_auth.registration.urls')),
 
     path('api/movies/',
-        include('movies.urls')),
+        include('movies.api.urls')),
 
     re_path(r'^.*$', IndexTemplateView.as_view(), name='entry-point'),
 ]
