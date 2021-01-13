@@ -6,6 +6,7 @@ from django.dispatch import receiver
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(
-            name=instance.username,
+            main_profile=True,
             account=instance,
+            name=instance.username,
             )
