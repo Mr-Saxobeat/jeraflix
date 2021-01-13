@@ -71,26 +71,38 @@ class SearchMoviesAPIView(generics.ListAPIView):
 class UserWatchListAPIView(generics.ListAPIView, generics.UpdateAPIView, base.ContextMixin):
     serializer_class = MovieSerializer
     permission_classes = [IsAuthenticated]
+    api_key = 'b6be2efeb72ba2ee8e22040e88b8da53'
 
     def get_queryset(self):
-        user = self.request.user
-        profile = user.profiles.first()
+        profile_id = request.session['current-profile']
+        profile = Profile.objects.get(pk=profile_id)
         queryset = profile.watch_list.all().order_by('title')
         return queryset
 
     def put(self, request):
-        user = self.request.user
-        profile = user.profiles.first()
+        profile_id = request.session['current-profile']
+        profile = Profile.objects.get(pk=profile_id)
         tmdb_id = self.request.POST['tmdb_id']
-        movie = get_object_or_404(Movie, tmdb_id=tmdb_id)
+
+        try:
+            movie = Movie.objects.get(tmdb_id=tmdb_id)
+        except Movie.DoesNotExist:
+            payloads = {'api_key': self.api_key }
+            response = requests.get('https://api.themoviedb.org/3/search/movie/' + tmdb_id + '/',
+                                    params=payloads)
+            response_json = response.json()
+
+            movie = Movie.objects.create(
+                tmdb_id=response_json['id'],
+                title=response_json['title']
+            )
+
 
         movie_is_on_profile_watchlist = profile.watch_list.filter(tmdb_id=movie.tmdb_id).exists()
 
         if movie_is_on_profile_watchlist:
-            print("existe")
             profile.watch_list.remove(movie)
         else:
-            print("nao existe")
             profile.watch_list.add(movie)
 
         profile.save()
@@ -103,16 +115,28 @@ class UserWatchedListAPIView(generics.ListAPIView, generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
-        profile = user.profiles.first()
+        profile_id = request.session['current-profile']
+        profile = Profile.objects.get(pk=profile_id)
         queryset = profile.watched_list.all()
         return queryset
 
     def put(self, request):
-        user = self.request.user
-        profile = user.profiles.first()
+        profile_id = request.session['current-profile']
+        profile = Profile.objects.get(pk=profile_id)
         tmdb_id = self.request.POST['tmdb_id']
-        movie = get_object_or_404(Movie, tmdb_id=tmdb_id)
+        
+        try:
+            movie = Movie.objects.get(tmdb_id=tmdb_id)
+        except Movie.DoesNotExist:
+            payloads = {'api_key': self.api_key }
+            response = requests.get('https://api.themoviedb.org/3/search/movie/' + tmdb_id + '/',
+                                    params=payloads)
+            response_json = response.json()
+
+            movie = Movie.objects.create(
+                tmdb_id=response_json['id'],
+                title=response_json['title']
+            )
 
         movie_is_on_profile_watchedlist = profile.watched_list.filter(tmdb_id=movie.tmdb_id).exists()
 
