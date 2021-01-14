@@ -11,5 +11,6 @@
         {{ form|crispy }}
         <button type="submit" class="btn btn-sm btn-outline-primary">Login</button>
     </form>
+    <p class="mt-2">Ou <a href="{% url 'django_registration_register' %}">crie uma conta!</a></p>
 </div>
 {% endblock %}
