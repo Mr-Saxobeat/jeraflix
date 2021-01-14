@@ -15,6 +15,7 @@ django-registration = "*"
 django-crispy-forms = "*"
 python-decouple = "*"
 requests = "*"
+django-webpack-loader = "*"
 
 [requires]
 python_version = "3.8"

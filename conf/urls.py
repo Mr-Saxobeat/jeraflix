@@ -21,6 +21,7 @@ from django_registration.backends.one_step.views import RegistrationView
 from core.views import IndexTemplateView
 from accounts.views import CustomLoginView
 from accounts.forms import AccountForm
+from movies.views import WatchListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -64,4 +65,7 @@ urlpatterns = [
         include('movies.api.urls')),
 
     re_path(r'^.*$', IndexTemplateView.as_view(), name='entry-point'),
+
+    path('watchlist/',
+        WatchListView, name='profile-watchlist'),
 ]
