@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '&-suvj4pk-b)%x3t7m%hbll46_15j!r$_#oye0zcw!e^8xq%fe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -186,9 +186,7 @@ WEBPACK_LOADER = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
-FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend')
-
-# STATICFILES_DIRS = [
-#     os.path.join(FRONTEND_DIR, 'dist/static'),
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'frontend/dist'),
+]
