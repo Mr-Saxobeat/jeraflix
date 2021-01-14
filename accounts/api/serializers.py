@@ -3,6 +3,8 @@ from accounts.models import CustomAccount, Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
     main_profile = serializers.BooleanField(read_only=True)
+    watch_list = serializers.StringRelatedField(read_only=True, many=True)
+    watched_list = serializers.StringRelatedField(read_only=True, many=True)
 
     class Meta:
         model = Profile

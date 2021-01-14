@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <div>
     <div class="container">
-      <h1>Filmes populares: </h1>
+      <h1>Minha lista: </h1>
       <div v-for="movie in movies"
            :key="movie.tmdb_id">
         <Movie :movie="movie" :key="movie.tmdb_id"></Movie>
@@ -15,7 +15,7 @@
 import { apiService } from "../common/api.service"
 import Movie from "../components/Movie"
 export default {
-  name: "Home",
+  name: "Watchlist",
   components: {
       Movie
   },
@@ -26,15 +26,15 @@ export default {
   },
   methods: {
     getMovies() {
-      let endpoint = "/api/movies/popular/";
+      let endpoint = "/api/movies/watchlist/";
       apiService(endpoint)
         .then(data => {
-          this.movies.push(...data.results);
+          this.movies.push(...data.results)
         })
     },
   },
   created() {
-    this.getMovies();
+    this.getMovies()
   }
 };
 </script>

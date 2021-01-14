@@ -1,4 +1,5 @@
 import requests
+import json
 from django.views.generic import base
 from rest_framework.generics import get_object_or_404
 from rest_framework import generics, status
@@ -8,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from movies.models import Movie
 from movies.api.serializers import MovieSerializer
+from accounts.models import Profile
 
 class ListPopularMoviesAPIView(generics.ListAPIView):
     serializer_class = MovieSerializer
@@ -74,21 +76,23 @@ class UserWatchListAPIView(generics.ListAPIView, generics.UpdateAPIView, base.Co
     api_key = 'b6be2efeb72ba2ee8e22040e88b8da53'
 
     def get_queryset(self):
-        profile_id = request.session['current-profile']
+        profile_id = self.request.session['current-profile']
+        # profile_id = self.context.get('request').session['current-profile']
         profile = Profile.objects.get(pk=profile_id)
         queryset = profile.watch_list.all().order_by('title')
         return queryset
 
     def put(self, request):
-        profile_id = request.session['current-profile']
+        profile_id = self.request.session['current-profile']
+        # profile_id = self.context.get('request').session['current-profile']
         profile = Profile.objects.get(pk=profile_id)
-        tmdb_id = self.request.POST['tmdb_id']
+        tmdb_id = request.data.get('tmdb_id')
 
         try:
             movie = Movie.objects.get(tmdb_id=tmdb_id)
         except Movie.DoesNotExist:
             payloads = {'api_key': self.api_key }
-            response = requests.get('https://api.themoviedb.org/3/search/movie/' + tmdb_id + '/',
+            response = requests.get('https://api.themoviedb.org/3/movie/' + str(tmdb_id),
                                     params=payloads)
             response_json = response.json()
 
@@ -106,7 +110,13 @@ class UserWatchListAPIView(generics.ListAPIView, generics.UpdateAPIView, base.Co
             profile.watch_list.add(movie)
 
         profile.save()
-        serializer = self.serializer_class(profile.watch_list, many=True)
+
+        serializer = self.serializer_class(data=self.get_queryset())
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            print(serializer.error_messages)
+        
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
@@ -115,21 +125,22 @@ class UserWatchedListAPIView(generics.ListAPIView, generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        profile_id = request.session['current-profile']
+        profile_id = self.request.session['current-profile']
         profile = Profile.objects.get(pk=profile_id)
         queryset = profile.watched_list.all()
         return queryset
 
-    def put(self, request):
-        profile_id = request.session['current-profile']
+def put(self, request):
+        profile_id = self.request.session['current-profile']
+        # profile_id = self.context.get('request').session['current-profile']
         profile = Profile.objects.get(pk=profile_id)
-        tmdb_id = self.request.POST['tmdb_id']
-        
+        tmdb_id = request.data.get('tmdb_id')
+
         try:
             movie = Movie.objects.get(tmdb_id=tmdb_id)
         except Movie.DoesNotExist:
             payloads = {'api_key': self.api_key }
-            response = requests.get('https://api.themoviedb.org/3/search/movie/' + tmdb_id + '/',
+            response = requests.get('https://api.themoviedb.org/3/movie/' + str(tmdb_id),
                                     params=payloads)
             response_json = response.json()
 
@@ -138,19 +149,20 @@ class UserWatchedListAPIView(generics.ListAPIView, generics.UpdateAPIView):
                 title=response_json['title']
             )
 
+
         movie_is_on_profile_watchedlist = profile.watched_list.filter(tmdb_id=movie.tmdb_id).exists()
 
         if movie_is_on_profile_watchedlist:
-            print("existe")
             profile.watched_list.remove(movie)
         else:
-            print("nao existe")
             profile.watched_list.add(movie)
 
         profile.save()
-        serializer = self.serializer_class(profile.watched_list, many=True)
+
+        serializer = self.serializer_class(data=self.get_queryset())
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            print(serializer.error_messages)
+        
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-
-
-
