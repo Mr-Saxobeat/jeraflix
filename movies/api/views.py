@@ -88,6 +88,28 @@ class UserWatchListAPIView(generics.ListAPIView, generics.UpdateAPIView, base.Co
         profile = Profile.objects.get(pk=profile_id)
         tmdb_id = request.data.get('tmdb_id')
 
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(tmdb_id)
+        print(request.data)
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+
+
         try:
             movie = Movie.objects.get(tmdb_id=tmdb_id)
         except Movie.DoesNotExist:
@@ -130,11 +152,31 @@ class UserWatchedListAPIView(generics.ListAPIView, generics.UpdateAPIView):
         queryset = profile.watched_list.all()
         return queryset
 
-def put(self, request):
+    def put(self, request):
         profile_id = self.request.session['current-profile']
         # profile_id = self.context.get('request').session['current-profile']
         profile = Profile.objects.get(pk=profile_id)
         tmdb_id = request.data.get('tmdb_id')
+
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(request.data)
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
+        print(".")
 
         try:
             movie = Movie.objects.get(tmdb_id=tmdb_id)

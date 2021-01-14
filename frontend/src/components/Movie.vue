@@ -3,13 +3,13 @@
       <div class="container card-body">
           {{ movie.title }}
           <button 
-            @click="removeFromWatchList(movie.tmdbId)"
+            @click="removeFromWatchList(movie)"
             v-if="movie.is_on_my_watchlist"
           >Remover da Minha Lista
           </button>
 
           <button
-            @click="addToWatchList(movie.tmdbId)"
+            @click="addToWatchList(movie)"
             v-else
           >Adicionar à Minha Lista
           </button>
@@ -38,15 +38,19 @@ export default {
       }
   },
   methods: {
-    addToWatchList(id) {
-      var data = { "tmdbId": id, "title": "" };
+    addToWatchList(movie) {
+      var data = { "tmdb_id": movie.tmdb_id, "title": "" };
+      console.log(data);
       var response = apiService("/api/movies/watchlist/", "PUT", data)
         .then(console.log(response));
+      movie.is_on_my_watchlist = true;
     },
-    removeFromWatchList(id) {
-      var data = { "tmdbId": id, "title": "" };
+    removeFromWatchList(movie) {
+      var data = { "tmdb_id": movie.tmdb_id, "title": "" };
+      console.log(data);
       var response = apiService("/api/movies/watchlist/", "PUT", data)
         .then(console.log(response));
+      movie.is_on_my_watchlist = false;
     }
   }
 }
