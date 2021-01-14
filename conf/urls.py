@@ -19,7 +19,7 @@ from django.urls import include, path, re_path
 from django_registration.backends.one_step.views import RegistrationView
 
 from core.views import IndexTemplateView
-from accounts.views import CustomLoginView
+from accounts.views import CustomLoginView, CustomRegistrationView
 from accounts.forms import AccountForm
 from movies.views import WatchListView
 
@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Registration via browser
     path('accounts/register/', 
-        RegistrationView.as_view(
+        CustomRegistrationView.as_view(
             form_class=AccountForm,
             success_url='/',
             ),
