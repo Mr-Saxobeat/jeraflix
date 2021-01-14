@@ -17,6 +17,9 @@ python-decouple = "*"
 requests = "*"
 django-webpack-loader = "*"
 gunicorn = "*"
+python-dotenv = "*"
+dj-database-url = "*"
+django-heroku = "*"
 
 [requires]
 python_version = "3.8"
